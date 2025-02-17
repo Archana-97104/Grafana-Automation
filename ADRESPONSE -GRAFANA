@@ -33,7 +33,7 @@ public class GrafanaTest {
 	@BeforeSuite
 	public void setUp() throws IOException {
 
-	 outputFilePath = "/Users/604550803/Documents/Grafana_Automation-main/Grafana/Data/console_output.xlsx";
+	 outputFilePath = "/Users/604550803/Downloads/Grafana/Data/console_output.xlsx";
 
 
 		outputWorkbook = new XSSFWorkbook();
@@ -89,10 +89,10 @@ public class GrafanaTest {
 	        text1 = "No output fetched.";
 	    }
 		
-		String resultPath = "/Users/604550803/Documents/Grafana_Automation-main/Grafana/Data";
+		String resultPath = "/Users/604550803/Downloads/Grafana/Data";
 		if (text1.length() > 32767) {
 	        // Save the large text to a file
-	        String baseDir = "/Users/604550803/Documents/Grafana_Automation-main/Grafana/Data";
+	        String baseDir = "/Users/604550803/Downloads/Grafana/Data";
 	        resultPath = baseDir + "/result_" + System.currentTimeMillis() + ".txt";
 	        try (FileOutputStream fos = new FileOutputStream(resultPath)) {
 	            fos.write(text1.getBytes());
