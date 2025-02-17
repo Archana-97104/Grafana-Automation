@@ -20,9 +20,11 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.Duration;
+
 
 public class GrafanaTest {
 	private XSSFWorkbook outputWorkbook;
@@ -53,8 +55,7 @@ public class GrafanaTest {
 	}
 
 	@Test(dataProvider = "DropdownData", dataProviderClass = ExcelReader.class)
-	public void runGrafana(String envInput, String regionInput, String queryInput, String sessionInput)
-			throws IOException {
+	public void runGrafana(String envInput, String regionInput, String queryInput, String sessionInput, String fromDate, String toDate) throws IOException {
 		// to open chrome
 
 		driver.get("https://d3q7rt0kr5fynf.cloudfront.net/ad-tools/mediatailor-logs-query-builder.html");
@@ -76,7 +77,31 @@ public class GrafanaTest {
 		List<String> allWindows = new ArrayList<String>(windowHandles);
 		driver.switchTo().window(allWindows.get(1));
 		driver.findElement(By.xpath("//span[@class='css-1ueg5w']//span[1]")).click();
-		driver.findElement(By.xpath("//label[text()='Last 7 days']")).click();
+		
+		System.out.println("Excel From Date: " + fromDate);
+		System.out.println("Excel To Date: " + toDate);
+		
+		// Enter From date using updated xpath
+		WebElement fromDateInput = driver.findElement(By.xpath("//input[@class='css-8tk2dk-input-input' and @aria-label='Time Range from field']"));
+		fromDateInput.click();
+		fromDateInput.clear();
+		fromDateInput.sendKeys(fromDate);
+		
+		// Enter To date using updated xpath
+		WebElement toDateInput = driver.findElement(By.xpath("//input[@class='css-8tk2dk-input-input' and @aria-label='Time Range to field']"));
+		toDateInput.click();
+		toDateInput.clear();
+		toDateInput.sendKeys(toDate);
+		
+		try {
+			Thread.sleep(1000);
+			System.out.println("From Date after setting: " + fromDateInput.getAttribute("value"));
+			System.out.println("To Date after setting: " + toDateInput.getAttribute("value"));
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		driver.findElement(By.xpath("//span[text()='Apply time range']")).click();
+		//driver.findElement(By.xpath("//label[text()='Last 7 days']")).click();
 		driver.findElement(By.xpath("//button[@class= 'css-5se5b3 css-1wx8bl8-positionRelative']")).click();
 		String text = driver.findElement(By.xpath("//button[@class= 'css-5se5b3 css-1wx8bl8-positionRelative']"))
 				.getText();
@@ -136,6 +161,7 @@ public class GrafanaTest {
 	}
 
 }
+
 
 
 
